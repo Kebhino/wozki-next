@@ -1,14 +1,15 @@
 "use client";
 
-import { Participant, SortConfig, Status } from "../../types/participants";
+import { Uzytkownik } from "@/app/types/user"; // dostosuj ścieżkę
+import { SortConfig } from "@/app/types/participants"; // ten może zostać jeśli dalej go używasz
 import SortableColumnHeader from "./SortableColumnHeader";
 import WierszUczestnika from "./WierszUczestnika";
 
 interface Props {
-  participants: Participant[];
+  participants: Uzytkownik[];
   sortConfig: SortConfig;
   onSortChange: (type: "surname" | "status") => void;
-  statusOptions: Status[];
+  statusOptions: { id: number; type: string }[]; // ✅ JEST
 }
 
 export default function TabelaUczestnikow({
@@ -23,12 +24,12 @@ export default function TabelaUczestnikow({
     const valA =
       type === "surname"
         ? a.name.split(" ").slice(-1)[0].toLowerCase()
-        : a.status.toLowerCase();
+        : a.UserType?.type.toLowerCase() || "";
 
     const valB =
       type === "surname"
         ? b.name.split(" ").slice(-1)[0].toLowerCase()
-        : b.status.toLowerCase();
+        : b.UserType?.type.toLowerCase() || "";
 
     return direction === "asc"
       ? valA.localeCompare(valB, "pl")

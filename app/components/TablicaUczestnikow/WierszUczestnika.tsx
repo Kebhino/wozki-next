@@ -1,6 +1,6 @@
 "use client";
 
-import { Participant, Status } from "../../types/participants";
+import { Uzytkownik } from "@/app/types/user";
 import { useEdytowanePolaMapa } from "../../stores/useEdytowanePolaMapa";
 import { useGlobalDialogStore } from "../../stores/useGlobalDialogStore";
 import { useQueryClient } from "@tanstack/react-query";
@@ -9,19 +9,19 @@ import { useEffect, useRef, useState } from "react";
 import DialogUsuniecia from "./DialogUsuniecia";
 import { Trash } from "lucide-react";
 
-// 🧪 Mock funkcji aktualizacji
-const updateParticipantInDbMock = async (
-  id: string,
-  field: keyof Participant,
-  value: string | boolean
+// ✅ Tu w przyszłości zaimplementuj faktyczne API
+const updateUzytkownikWbazie = async (
+  id: number,
+  field: keyof Uzytkownik,
+  value: string | boolean | number
 ) => {
-  await new Promise((res) => setTimeout(res, 300));
-  console.log(`(Mock) Zaktualizowano uczestnika ${id}: ${field} = ${value}`);
+  await new Promise((res) => setTimeout(res, 300)); // Tymczasowy delay
+  console.log(`Zaktualizowano ${id}: ${field} = ${value}`);
 };
 
 interface Props {
-  participant: Participant;
-  statusOptions: Status[];
+  participant: Uzytkownik;
+  statusOptions: { id: number; type: string }[];
 }
 
 export default function WierszUczestnika({
@@ -56,17 +56,17 @@ export default function WierszUczestnika({
   }, [trybEdycji]);
 
   const handleUpdate = async (
-    field: keyof Participant,
-    value: string | boolean
+    field: keyof Uzytkownik,
+    value: string | boolean | number
   ) => {
     dodajPoleDoMapy(participant.id, field);
     setIsUpdating(true);
     try {
-      await updateParticipantInDbMock(participant.id, field, value); // 🧪
-      toast.success("Zaktualizowano (mock)");
+      await updateUzytkownikWbazie(participant.id, field, value);
+      toast.success("Zaktualizowano");
       queryClient.invalidateQueries({ queryKey: ["participants"] });
     } catch {
-      toast.error("Błąd aktualizacji (mock)");
+      toast.error("Błąd aktualizacji");
     } finally {
       usunPoleZMapy(participant.id, field);
       setIsUpdating(false);
@@ -75,7 +75,6 @@ export default function WierszUczestnika({
 
   return (
     <tr className="hover">
-      {/* Imię i nazwisko */}
       <td>
         {sprawdzCzyEdytowane(participant.id, "name") ? (
           <span className="loading loading-spinner loading-sm text-primary" />
@@ -105,20 +104,24 @@ export default function WierszUczestnika({
         )}
       </td>
 
-      {/* Status + aktywność */}
       <td>
         <div className="flex gap-2 items-center">
-          {sprawdzCzyEdytowane(participant.id, "status") ? (
+          {sprawdzCzyEdytowane(participant.id, "userTypeId") ? (
             <span className="loading loading-spinner loading-sm text-primary" />
           ) : (
             <select
               className="select select-bordered select-sm w-[110px]"
-              defaultValue={participant.status}
-              onChange={(e) => handleUpdate("status", e.target.value)}
+              defaultValue={participant.userTypeId ?? ""}
+              onChange={(e) =>
+                handleUpdate("userTypeId", parseInt(e.target.value, 10))
+              }
             >
+              <option value="" disabled>
+                Wybierz...
+              </option>
               {statusOptions.map((status) => (
-                <option key={status} value={status}>
-                  {status}
+                <option key={status.id} value={status.id}>
+                  {status.type}
                 </option>
               ))}
             </select>
@@ -131,18 +134,12 @@ export default function WierszUczestnika({
               type="checkbox"
               className="toggle toggle-success"
               checked={participant.active}
-              onChange={(e) => {
-                dodajPoleDoMapy(participant.id, "active");
-                handleUpdate("active", e.target.checked).finally(() =>
-                  usunPoleZMapy(participant.id, "active")
-                );
-              }}
+              onChange={(e) => handleUpdate("active", e.target.checked)}
             />
           )}
         </div>
       </td>
 
-      {/* Akcje */}
       <td>
         <button
           className="btn btn-sm btn-outline btn-error rounded-lg"

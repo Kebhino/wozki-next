@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
 interface GlobalDialogStore {
-  idDoUsuniecia: string | null;
-  setIdDoUsuniecia: (id: string) => void;
+  idDoUsuniecia: number | null;
+  setIdDoUsuniecia: (id: number) => void;
   resetIdDoUsuniecia: () => void;
 }
 

@@ -2,110 +2,99 @@
 
 import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
-import { useQueryClient } from "@tanstack/react-query";
-import { v4 as uuidv4 } from "uuid";
-import {
-  AddParticipantProps,
-  Participant,
-  Status,
-} from "../../types/participants";
 import toast from "react-hot-toast";
+import { Uzytkownik } from "@/app/types/user";
 
 interface Props {
-  onLoadingChange: (state: boolean) => void;
-  statusOptions: Status[];
+  onDodano: (nowy: Uzytkownik) => void;
+  statusOptions: { id: number; type: string }[];
 }
 
-// 🧪 Tymczasowa funkcja zamiast prawdziwego API
-const addParticipantMock = async (participant: AddParticipantProps) => {
-  await new Promise((res) => setTimeout(res, 300));
-  console.log("(Mock) Dodano uczestnika:", participant);
-};
-
 export default function FormularzDodajUczestnika({
-  onLoadingChange,
+  onDodano,
   statusOptions,
 }: Props) {
-  const queryClient = useQueryClient();
-  const [newParticipant, setNewParticipant] = useState<Omit<Participant, "id">>(
-    {
-      name: "",
-      status: "Głosiciel",
-      active: true,
-    }
-  );
+  const [nameInput, setNameInput] = useState("");
+  const [userTypeId, setUserTypeId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleAddParticipant = async () => {
-    if (!newParticipant.name.trim()) {
-      toast.error("Podaj imię i nazwisko");
+  const handleAdd = async () => {
+    console.log("Klik!");
+    if (!nameInput.trim() || !userTypeId) {
+      toast.error("Uzupełnij imię i wybierz status");
       return;
     }
 
-    const names = newParticipant.name
+    const names = nameInput
       .split(",")
       .map((n) => n.trim())
       .filter(Boolean);
 
     try {
-      onLoadingChange(true);
+      setLoading(true);
       for (const name of names) {
-        const payload: AddParticipantProps = {
-          id: uuidv4(),
-          active: newParticipant.active,
-          name,
-          status: newParticipant.status,
-        };
-        await addParticipantMock(payload); // 🧪 użycie mocka
+        const res = await fetch("/api/users", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, userTypeId }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || "Błąd dodawania");
+        }
+
+        const nowy = await res.json();
+        onDodano(nowy);
       }
 
       toast.success(
         names.length > 1
-          ? `Dodano ${names.length} uczestników (mock)`
-          : "Dodano uczestnika (mock)"
+          ? `Dodano ${names.length} uczestników`
+          : "Dodano uczestnika"
       );
 
-      queryClient.invalidateQueries({ queryKey: ["participants"] });
-      setNewParticipant({ name: "", status: "Głosiciel", active: true });
-    } catch (err) {
-      toast.error("Błąd dodawania (mock)");
-      console.error(err);
+      setNameInput("");
+      setUserTypeId(null);
+    } catch (err: any) {
+      toast.error(err.message || "Błąd");
     } finally {
-      onLoadingChange(false);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex gap-2 py-2 flex-wrap">
+    <div className="flex gap-2 py-2 flex-wrap items-end">
       <input
         type="text"
-        placeholder="Nowy uczestnik lub wielu po przecinku"
+        placeholder="Imię lub wiele po przecinku"
         className="input input-bordered w-full max-w-sm"
-        value={newParticipant.name}
-        onChange={(e) =>
-          setNewParticipant((prev) => ({ ...prev, name: e.target.value }))
-        }
+        value={nameInput}
+        onChange={(e) => setNameInput(e.target.value)}
+        disabled={loading}
       />
 
       <select
         className="select select-bordered"
-        value={newParticipant.status}
-        onChange={(e) =>
-          setNewParticipant((prev) => ({
-            ...prev,
-            status: e.target.value as Status,
-          }))
-        }
+        value={userTypeId ?? ""}
+        onChange={(e) => setUserTypeId(Number(e.target.value))}
+        disabled={loading}
       >
+        <option value="" disabled>
+          Wybierz status
+        </option>
         {statusOptions.map((status) => (
-          <option key={status} value={status}>
-            {status}
+          <option key={status.id} value={status.id}>
+            {status.type}
           </option>
         ))}
       </select>
 
       <button
-        className="btn btn-outline btn-success"
-        onClick={handleAddParticipant}
+        className="btn btn-success"
+        onClick={handleAdd}
+        disabled={loading}
+        title="Dodaj uczestnika"
       >
         <IoMdAdd />
       </button>
