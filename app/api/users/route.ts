@@ -12,7 +12,8 @@ export async function GET() {
     return NextResponse.json(users);
   } catch (error) {
     console.error("Błąd pobierania użytkowników:", error);
-    return NextResponse.json({ error: "Wewnętrzny błąd serwera" }, { status: 500 });
+    return NextResponse.json({ error: String(error) }, { status: 500 });
+
   }
 }
 
