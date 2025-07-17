@@ -4,14 +4,15 @@ import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import toast from "react-hot-toast";
 import { Uzytkownik } from "@/app/types/user";
+import { UserType } from "@/app/generated/prisma";
 
 interface Props {
-  onDodano: (nowy: Uzytkownik) => void;
-  statusOptions: { id: number; type: string }[];
+  onDodanoAction: (nowy: Uzytkownik) => void;
+  statusOptions: UserType[];
 }
 
 export default function FormularzDodajUczestnika({
-  onDodano,
+  onDodanoAction,
   statusOptions,
 }: Props) {
   const [nameInput, setNameInput] = useState("");
@@ -45,7 +46,7 @@ export default function FormularzDodajUczestnika({
         }
 
         const nowy = await res.json();
-        onDodano(nowy);
+        onDodanoAction(nowy);
       }
 
       toast.success(
@@ -56,8 +57,12 @@ export default function FormularzDodajUczestnika({
 
       setNameInput("");
       setUserTypeId(null);
-    } catch (err: any) {
-      toast.error(err.message || "Błąd");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error("Wystąpił nieznany błąd");
+      }
     } finally {
       setLoading(false);
     }

@@ -1,20 +1,14 @@
 "use client";
 
-import { Participant } from "../../types/participants";
+import { UserZTypem } from "./TabelaUczestnikow";
 import { useGlobalDialogStore } from "../../stores/useGlobalDialogStore";
 import { useEdytowanePolaMapa } from "../../stores/useEdytowanePolaMapa";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
 interface Props {
-  participant: Participant;
+  participant: UserZTypem;
 }
-
-// 🧪 Tymczasowa funkcja zamiast prawdziwego API
-const deleteParticipantMock = async (id: string) => {
-  await new Promise((res) => setTimeout(res, 500)); // symuluj opóźnienie
-  console.log(`(Mock) Deleted participant with id: ${id}`);
-};
 
 export default function DialogUsuniecia({ participant }: Props) {
   const { resetIdDoUsuniecia } = useGlobalDialogStore();
@@ -23,8 +17,17 @@ export default function DialogUsuniecia({ participant }: Props) {
 
   const handleDelete = async () => {
     try {
-      await deleteParticipantMock(participant.id); // zamieniamy na mocka
-      toast.success("Uczestnik usunięty (mock)");
+      const res = await fetch("/api/users", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: participant.id }),
+      });
+
+      if (!res.ok) throw new Error("Błąd usuwania");
+
+      toast.success("Uczestnik usunięty");
       queryClient.invalidateQueries({ queryKey: ["participants"] });
     } catch {
       toast.error("Błąd usuwania uczestnika");

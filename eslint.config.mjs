@@ -9,8 +9,16 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
+export default [
+  // ⛔ Pliki/foldery ignorowane przez ESLint
+  {
+    ignores: [
+      "app/generated/prisma/**",
+      "node_modules/**",
+      ".next/**",
+      "**/.prisma/**",
+    ],
+  },
+  // ✅ Reszta konfiguracji Next.js + TypeScript
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 ];
-
-export default eslintConfig;

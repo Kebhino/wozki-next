@@ -51,14 +51,14 @@ export default function TablicaUczestnikow() {
       ) : (
         <>
           <FormularzDodajUczestnika
-            onDodano={handleDodano}
+            onDodanoAction={handleDodano}
             statusOptions={statusOptions}
           />
 
           <TabelaUczestnikow
-            participants={participants}
+            users={participants}
             sortConfig={sortConfig}
-            onSortChange={(type) => {
+            onSortChangeAction={(type) => {
               setSortConfig((prev) => ({
                 type,
                 direction:

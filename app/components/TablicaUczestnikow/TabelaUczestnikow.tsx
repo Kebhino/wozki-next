@@ -1,24 +1,29 @@
 "use client";
 
-import { Uzytkownik } from "@/app/types/user"; // dostosuj ścieżkę
+import type { User, UserType } from "@/app/generated/prisma";
 import { SortConfig } from "@/app/types/participants"; // ten może zostać jeśli dalej go używasz
 import SortableColumnHeader from "./SortableColumnHeader";
 import WierszUczestnika from "./WierszUczestnika";
 
+export type UserZTypem = User & {
+  UserType: UserType;
+};
+
 interface Props {
-  participants: Uzytkownik[];
+  users: UserZTypem[];
   sortConfig: SortConfig;
-  onSortChange: (type: "surname" | "status") => void;
-  statusOptions: { id: number; type: string }[]; // ✅ JEST
+  onSortChangeAction: (type: "surname" | "status") => void;
+  statusOptions: UserType[]; // ✅ JEST
 }
 
 export default function TabelaUczestnikow({
-  participants,
+  users = [],
   sortConfig,
-  onSortChange,
+  onSortChangeAction,
   statusOptions,
 }: Props) {
-  const sorted = [...participants].sort((a, b) => {
+  console.log(`TO JEST TU `, users[0].createdAt.getDay());
+  const sortedUsers = [...users].sort((a, b) => {
     const { type, direction } = sortConfig;
 
     const valA =
@@ -47,7 +52,7 @@ export default function TabelaUczestnikow({
                 sortKey="surname"
                 currentSort={sortConfig.type}
                 sortAsc={sortConfig.direction === "asc"}
-                onSortChange={onSortChange}
+                onSortChange={onSortChangeAction}
               />
             </th>
             <th>
@@ -56,17 +61,17 @@ export default function TabelaUczestnikow({
                 sortKey="status"
                 currentSort={sortConfig.type}
                 sortAsc={sortConfig.direction === "asc"}
-                onSortChange={onSortChange}
+                onSortChange={onSortChangeAction}
               />
             </th>
             <th>Akcje</th>
           </tr>
         </thead>
         <tbody>
-          {sorted.map((p) => (
+          {sortedUsers.map((user) => (
             <WierszUczestnika
-              key={p.id}
-              participant={p}
+              key={user.id}
+              participant={user}
               statusOptions={statusOptions}
             />
           ))}
