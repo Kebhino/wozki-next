@@ -51,7 +51,7 @@ export async function PATCH(request: NextRequest) {
 
   try {
     const updated = await prisma.user.update({
-      where: { id: parseInt(id, 10) },
+      where: { id },
       data: { [field]: value },
     });
 

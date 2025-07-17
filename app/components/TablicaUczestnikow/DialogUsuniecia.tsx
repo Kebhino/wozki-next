@@ -8,20 +8,24 @@ import { toast } from "react-hot-toast";
 
 interface Props {
   participant: UserZTypem;
+  setUsunWTrakcieAction: (id: number | null) => void;
 }
 
-export default function DialogUsuniecia({ participant }: Props) {
+export default function DialogUsuniecia({
+  participant,
+  setUsunWTrakcieAction,
+}: Props) {
   const { resetIdDoUsuniecia } = useGlobalDialogStore();
   const { usunPoleZMapy } = useEdytowanePolaMapa();
   const queryClient = useQueryClient();
 
   const handleDelete = async () => {
+    setUsunWTrakcieAction(participant.id);
+
     try {
       const res = await fetch("/api/users", {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: participant.id }),
       });
 
@@ -34,6 +38,7 @@ export default function DialogUsuniecia({ participant }: Props) {
     } finally {
       resetIdDoUsuniecia();
       usunPoleZMapy(participant.id, "usun");
+      setUsunWTrakcieAction(null);
     }
   };
 
@@ -66,15 +71,15 @@ export default function DialogUsuniecia({ participant }: Props) {
           </button>
         </div>
       </div>
-      <form method="dialog" className="modal-backdrop">
-        <button
-          onClick={() => {
-            resetIdDoUsuniecia();
-            usunPoleZMapy(participant.id, "usun");
-          }}
-        >
-          close
-        </button>
+      <form
+        method="dialog"
+        className="modal-backdrop"
+        onClick={() => {
+          resetIdDoUsuniecia();
+          usunPoleZMapy(participant.id, "usun");
+        }}
+      >
+        <button>close</button>
       </form>
     </dialog>
   );
