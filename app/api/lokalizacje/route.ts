@@ -11,17 +11,18 @@ export async function GET() {
       
 }
 
-export async function POST(request:NextRequest) {
+export async function POST(request: NextRequest) {
 
     const body = await request.json()
+    const { name } = body
 
-    if (!body.name) {
+    if (!name) {
         return NextResponse.json({error : "Brak nazwy lokazji"},{status: 400})
         }
 
 
     const nowaLokalizacja = await prisma.location.create({
-        data: {name: body.name} 
+        data: {name} 
     })
 
     return NextResponse.json(nowaLokalizacja, {status: 201})
@@ -33,7 +34,7 @@ export async function PATCH(request:NextRequest) {
     const { id, field, value } = body 
 
     if (!id || value === undefined || !field) { 
-        return NextResponse.json({error: "Brak danych lokalizacji"}, {status: 400})
+        return NextResponse.json({error: "Brak nazyw lokalizacji"}, {status: 400})
     }
     try {
         const updated = await prisma.location.update({
@@ -63,6 +64,7 @@ export async function DELETE(request:NextRequest) {
         })
         return NextResponse.json(deleted)
     } catch(error) { 
+        console.error("Błąd serwera:", error);
         return NextResponse.json({error: "Błąd serwera"}, {status: 500})
     }
 

@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 import FormularzDodajUczestnika from "./FormularzDodajUczestnika";
 import TabelaUczestnikow from "./TabelaUczestnikow";
-import { SortConfig } from "@/app/types/participants";
+import { SortConfig } from "@/app/types/sortowanieUczestnicy";
 import { getParticipants, getUserTypes } from "@/lib/users";
 
 export default function TablicaUczestnikow() {

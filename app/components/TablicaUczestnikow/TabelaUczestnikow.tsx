@@ -1,7 +1,7 @@
 "use client";
 
 import type { User, UserType } from "@/app/generated/prisma";
-import { SortConfig } from "@/app/types/participants"; // ten może zostać jeśli dalej go używasz
+import { SortConfig } from "@/app/types/sortowanieUczestnicy"; // ten może zostać jeśli dalej go używasz
 import SortableColumnHeader from "./SortableColumnHeader";
 import WierszUczestnika from "./WierszUczestnika";
 
@@ -22,7 +22,6 @@ export default function TabelaUczestnikow({
   onSortChangeAction,
   statusOptions,
 }: Props) {
-  console.log(`TO JEST TU `, users[0].createdAt.getDay());
   const sortedUsers = [...users].sort((a, b) => {
     const { type, direction } = sortConfig;
 
