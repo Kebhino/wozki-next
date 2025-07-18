@@ -96,7 +96,7 @@ export default function WierszUczestnika({
           ) : (
             <select
               className="select select-bordered select-sm w-[110px]"
-              defaultValue={participant.userTypeId ?? ""}
+              value={participant.userTypeId ?? ""}
               onChange={async (e) => {
                 dodajPoleDoMapy(participant.id, "status");
                 await handleUpdate("userTypeId", parseInt(e.target.value, 10));
