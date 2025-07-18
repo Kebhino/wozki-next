@@ -29,3 +29,19 @@ model UserType {
   type  String
   users User[]
 }
+
+model Location {
+  id     Int     @id @default(autoincrement())
+  name   String
+  active Boolean @default(true)
+  Slot   Slot[]
+}
+
+model Slot {
+  id         Int      @id @default(autoincrement())
+  active     Boolean  @default(true)
+  data       DateTime @default(now())
+  from       Int      @default(11)
+  Location   Location @relation(fields: [locationId], references: [id])
+  locationId Int
+}
