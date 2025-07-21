@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 import { useGlobalDialogStore } from "../../stores/useGlobalDialogStore";
 import DialogUsuniecia from "./DialogUsuniecia";
 import { UserZTypem } from "./TabelaUczestnikow";
+import { useStatus } from "@/app/hooks/useStatus";
 
 interface Props {
   participant: UserZTypem;
@@ -20,6 +21,7 @@ export default function WierszUczestnika({
   statusOptions,
 }: Props) {
   const queryClient = useQueryClient();
+
   const { setIdDoUsuniecia, idDoUsuniecia } = useGlobalDialogStore();
   const { dodajPoleDoMapy, usunPoleZMapy, sprawdzCzyEdytowane } =
     useEdytowanePolaMapa();

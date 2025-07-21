@@ -6,6 +6,6 @@ import { UserType } from "../generated/prisma"
  
  export const useStatus = () => { 
     return useQuery<UserType[]>({
-    queryKey: ["participants"],
+    queryKey: ["status"],
     queryFn: ({signal}) => pobierzStatusUczestnika(signal),
   })}

@@ -49,6 +49,7 @@ export default function TablicaUczestnikow() {
           <TabelaUczestnikow
             users={participants}
             sortConfig={sortConfig}
+            statusOptions={statusOptions}
             onSortChangeAction={(type) => {
               setSortConfig((prev) => ({
                 type,

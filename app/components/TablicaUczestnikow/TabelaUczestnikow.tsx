@@ -14,18 +14,15 @@ interface Props {
   users: UserZTypem[];
   sortConfig: SortConfig;
   onSortChangeAction: (type: "surname" | "status") => void;
+  statusOptions: UserType[];
 }
 
 export default function TabelaUczestnikow({
   users = [],
   sortConfig,
+  statusOptions,
   onSortChangeAction,
 }: Props) {
-  const {
-    data: statusOptions = [],
-    isLoading: isLoadingStatus,
-    isError: isErrorStatus,
-  } = useStatus();
   const sortedUsers = [...users].sort((a, b) => {
     const { type, direction } = sortConfig;
 
