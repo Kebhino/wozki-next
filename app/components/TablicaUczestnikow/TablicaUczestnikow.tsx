@@ -1,13 +1,13 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-
+import { SortConfig } from "@/app/types/sortowanieUczestnicy";
 import FormularzDodajUczestnika from "./FormularzDodajUczestnika";
 import TabelaUczestnikow from "./TabelaUczestnikow";
-import { SortConfig } from "@/app/types/sortowanieUczestnicy";
-import { getParticipants, getUserTypes } from "@/lib/users";
+import { useStatus } from "@/app/hooks/useStatus";
+import { useUczestnicy } from "@/app/hooks/useUczestnicy";
 
 export default function TablicaUczestnikow() {
   const queryClient = useQueryClient();
@@ -22,20 +22,14 @@ export default function TablicaUczestnikow() {
     data: participants = [],
     isLoading: isLoadingParticipants,
     isError: isErrorParticipants,
-  } = useQuery({
-    queryKey: ["participants"],
-    queryFn: getParticipants,
-  });
+  } = useUczestnicy();
 
   // ✅ Pobieranie statusów
   const {
     data: statusOptions = [],
     isLoading: isLoadingStatus,
     isError: isErrorStatus,
-  } = useQuery({
-    queryKey: ["statusOptions"],
-    queryFn: getUserTypes,
-  });
+  } = useStatus();
 
   const handleDodano = () => {
     toast.success("Dodano uczestnika");
@@ -50,10 +44,7 @@ export default function TablicaUczestnikow() {
         <p className="text-error">Błąd ładowania danych</p>
       ) : (
         <>
-          <FormularzDodajUczestnika
-            onDodanoAction={handleDodano}
-            statusOptions={statusOptions}
-          />
+          <FormularzDodajUczestnika onDodanoAction={handleDodano} />
 
           <TabelaUczestnikow
             users={participants}
@@ -69,7 +60,6 @@ export default function TablicaUczestnikow() {
                     : "asc",
               }));
             }}
-            statusOptions={statusOptions}
           />
         </>
       )}

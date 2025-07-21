@@ -1,6 +1,3 @@
-// app/uczestnicy/page.tsx
-"use client";
-
 import Lokalizacje from "../components/Lokalizacje/LokalizacjePage";
 
 export default function UczestnicyPage() {

@@ -8,26 +8,15 @@ import WierszLokalizacji from "./WierszLokalizacji";
 import type { Location } from "@/app/generated/prisma";
 import { SortConfigLokalizacje } from "@/app/types/sortowanieLokalizacje";
 import SortableColumnHeader from "./SortableColumnHeaderLokalizacje";
+import { useLokalizacje } from "@/app/hooks/useLokalizacje";
 
 export default function LokalizacjePage() {
   const queryClient = useQueryClient();
+  const { data: lokalizacje = [], isLoading, isError } = useLokalizacje();
   const [dodawanie, setDodawanie] = useState(false);
   const [sortConfig, setSortConfig] = useState<SortConfigLokalizacje>({
     type: "name",
     direction: "asc",
-  });
-
-  const {
-    data: lokalizacje = [],
-    isLoading,
-    isError,
-  } = useQuery<Location[]>({
-    queryKey: ["lokalizacje"],
-    queryFn: async () => {
-      const res = await fetch("/api/lokalizacje");
-      if (!res.ok) throw new Error("Błąd ładowania lokalizacji");
-      return res.json();
-    },
   });
 
   const dodajLokalizacje = async (nazwa: string) => {

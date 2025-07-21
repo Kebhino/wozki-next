@@ -5,16 +5,14 @@ import { IoMdAdd } from "react-icons/io";
 import toast from "react-hot-toast";
 import { Uzytkownik } from "@/app/types/user";
 import { UserType } from "@/app/generated/prisma";
+import { useStatus } from "@/app/hooks/useStatus";
 
 interface Props {
   onDodanoAction: (nowy: Uzytkownik) => void;
-  statusOptions: UserType[];
 }
 
-export default function FormularzDodajUczestnika({
-  onDodanoAction,
-  statusOptions,
-}: Props) {
+export default function FormularzDodajUczestnika({ onDodanoAction }: Props) {
+  const { data: statusOptions = [] } = useStatus();
   const [nameInput, setNameInput] = useState("");
   const [userTypeId, setUserTypeId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
