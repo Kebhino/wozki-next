@@ -12,7 +12,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="pl" data-theme="fantasy">
+    <html lang="pl" data-theme="light">
       <body className="w-full max-w-screen-lg mx-auto min-h-screen grid grid-rows-[auto_1fr_auto]">
         <Providers>
           <NavigationBar />
