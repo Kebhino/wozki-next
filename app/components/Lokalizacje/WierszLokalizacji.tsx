@@ -26,7 +26,7 @@ export default function WierszLokalizacji({ lokalizacja }: Props) {
   const handleUpdate = useCallback(
     async (field: keyof Location, value: string | boolean) => {
       try {
-        const res = await fetch("/api/lokalizacje", {
+        const res = await fetch("/api/locations", {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

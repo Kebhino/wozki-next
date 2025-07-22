@@ -23,7 +23,7 @@ export default function DialogUsunieciaLokalizacji({
     setUsunWTrakcieAction(lokalizacja.id);
 
     try {
-      const res = await fetch("/api/lokalizacje", {
+      const res = await fetch("/api/locations", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: lokalizacja.id }),

@@ -7,7 +7,7 @@ import { SortConfig } from "@/app/types/sortowanieUczestnicy";
 import FormularzDodajUczestnika from "./FormularzDodajUczestnika";
 import TabelaUczestnikow from "./TabelaUczestnikow";
 import { useStatus } from "@/app/hooks/useStatus";
-import { useUczestnicy } from "@/app/hooks/useUczestnicy";
+import { useUczestnicy } from "@/app/hooks/useUsers";
 
 export default function TablicaUczestnikow() {
   const queryClient = useQueryClient();

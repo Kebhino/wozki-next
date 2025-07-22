@@ -8,7 +8,7 @@ import WierszLokalizacji from "./WierszLokalizacji";
 import type { Location } from "@/app/generated/prisma";
 import { SortConfigLokalizacje } from "@/app/types/sortowanieLokalizacje";
 import SortableColumnHeader from "./SortableColumnHeaderLokalizacje";
-import { useLokalizacje } from "@/app/hooks/useLokalizacje";
+import { useLokalizacje } from "@/app/hooks/useLocations";
 
 export default function LokalizacjePage() {
   const queryClient = useQueryClient();
@@ -28,7 +28,7 @@ export default function LokalizacjePage() {
     setDodawanie(true);
 
     try {
-      const res = await fetch("/api/lokalizacje", {
+      const res = await fetch("/api/locations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: nazwa }),

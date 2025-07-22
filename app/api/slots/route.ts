@@ -1,6 +1,20 @@
 import { prisma } from '@/prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
+
+export async function GET() { 
+try { 
+    const sloty = await prisma.slot.findMany({ 
+        include: { Location: true },
+        orderBy: {id: 'asc'}
+    })
+    return NextResponse.json(sloty)
+}catch (error) { 
+
+    return NextResponse.json({error: "Bład serwera"}, {status: 500})
+}
+}
+
 export async function POST(request:NextRequest) {
 
     try { 

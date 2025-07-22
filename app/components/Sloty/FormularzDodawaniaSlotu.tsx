@@ -1,7 +1,7 @@
 "use client";
 
 import { Location } from "@/app/generated/prisma";
-import { useLokalizacje } from "@/app/hooks/useLokalizacje";
+import { useLokalizacje } from "@/app/hooks/useLocations";
 import { useSloty } from "@/app/hooks/useSlots";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
