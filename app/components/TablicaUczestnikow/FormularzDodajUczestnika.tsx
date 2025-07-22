@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { IoMdAdd } from "react-icons/io";
-import toast from "react-hot-toast";
-import { Uzytkownik } from "@/app/types/user";
-import { UserType } from "@/app/generated/prisma";
 import { useStatus } from "@/app/hooks/useStatus";
+import { Uzytkownik } from "@/app/types/user";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { IoMdAdd } from "react-icons/io";
 
 interface Props {
   onDodanoAction: (nowy: Uzytkownik) => void;

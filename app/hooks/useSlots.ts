@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Slot } from "../generated/prisma";
-import { pobierzSloty } from "@/lib/api/sloty";
+import { pobierzSloty } from "@/lib/api/slots";
 
 
 
