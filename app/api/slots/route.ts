@@ -38,3 +38,45 @@ export async function POST(request:NextRequest) {
         return NextResponse.json({error: "Bład serwera"},{status: 500})
     }
 }
+
+export async function PATCH(req: Request) {
+  try {
+    const { id, field, value } = await req.json();
+
+    if (!id || !field) {
+      return NextResponse.json({ error: "Brak danych" }, { status: 400 });
+    }
+
+    const updatedSlot = await prisma.slot.update({
+      where: { id },
+      data: {
+        [field]: value,
+      },
+    });
+
+    return NextResponse.json(updatedSlot);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Błąd serwera" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const body = await req.json();
+    const {id} = body 
+
+    if (!id) {
+      return NextResponse.json({ error: "Brak ID" }, { status: 400 });
+    }
+
+    await prisma.slot.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Błąd usuwania:", error);
+    return NextResponse.json({ error: "Błąd serwera" }, { status: 500 });
+  }
+}

@@ -17,7 +17,6 @@ export default function FormularzDodajUczestnika({ onDodanoAction }: Props) {
   const [loading, setLoading] = useState(false);
 
   const handleAdd = async () => {
-    console.log("Klik!");
     if (!nameInput.trim() || !userTypeId) {
       toast.error("Uzupełnij imię i wybierz status");
       return;
@@ -66,18 +65,18 @@ export default function FormularzDodajUczestnika({ onDodanoAction }: Props) {
   };
 
   return (
-    <div className="flex gap-2 py-2 flex-wrap items-end">
+    <div className="flex flex-col sm:flex-row sm:items-end sm:gap-3 gap-2 py-2">
       <input
         type="text"
         placeholder="Imię lub wiele po przecinku"
-        className="input input-bordered w-full max-w-sm"
+        className="input input-bordered w-full sm:max-w-sm"
         value={nameInput}
         onChange={(e) => setNameInput(e.target.value)}
         disabled={loading}
       />
 
       <select
-        className="select select-bordered"
+        className="select select-bordered w-full sm:w-auto"
         value={userTypeId ?? ""}
         onChange={(e) => setUserTypeId(Number(e.target.value))}
         disabled={loading}
@@ -93,7 +92,7 @@ export default function FormularzDodajUczestnika({ onDodanoAction }: Props) {
       </select>
 
       <button
-        className="btn btn-success"
+        className="btn btn-success w-full sm:w-auto"
         onClick={handleAdd}
         disabled={loading}
         title="Dodaj uczestnika"

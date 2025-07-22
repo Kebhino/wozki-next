@@ -1,7 +1,5 @@
-// app/uczestnicy/page.tsx
+import TablicaSlotow from "../components/Sloty/TablicaSlotow";
 
-import FormularzDodawaniaSlotu from "../components/Sloty/FormularzDodawaniaSlotu";
-
-export default function UczestnicyPage() {
-  return <FormularzDodawaniaSlotu />;
+export default function PageSloty() {
+  return <TablicaSlotow />;
 }

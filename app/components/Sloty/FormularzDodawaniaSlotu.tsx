@@ -1,34 +1,21 @@
 "use client";
 
-import { Location } from "@/app/generated/prisma";
 import { useLokalizacje } from "@/app/hooks/useLocations";
 import { useSloty } from "@/app/hooks/useSlots";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { IoMdAdd } from "react-icons/io";
-import { v4 as uuidv4 } from "uuid";
 
-const dostepneGodzinyOd = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
-const dostepneGodzinyDo = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+const godzinyOd = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+const godzinyDo = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 
 export default function FormularzDodawaniaSlotu() {
-  const {
-    data: lokalizacje = [],
-    isLoading,
-    isError,
-    refetch: refetchSloty,
-  } = useLokalizacje();
-
-  const {
-    data: sloty = [],
-    isLoading: isLoadingSlot,
-    isError: isErrorSlot,
-  } = useSloty();
-
+  const { data: lokalizacje = [], refetch: refetchSloty } = useLokalizacje();
   const [dodawanie, setDodawanie] = useState(false);
+
   const [nowySlot, setNowySlot] = useState({
     lokalizacjaId: "",
-    data: new Date().toISOString().split("T")[0], // yyyy-mm-dd
+    data: new Date().toISOString().split("T")[0],
     from: 0,
     to: undefined as number | undefined,
   });
@@ -63,7 +50,7 @@ export default function FormularzDodawaniaSlotu() {
         to: undefined,
       });
       refetchSloty();
-    } catch (err) {
+    } catch {
       toast.error("Błąd dodawania slota.");
     } finally {
       setDodawanie(false);
@@ -71,98 +58,128 @@ export default function FormularzDodawaniaSlotu() {
   };
 
   return (
-    <div className="flex flex-wrap gap-2 items-center mb-4">
-      {/* Lokalizacja */}
-      <select
-        className="select select-sm select-bordered"
-        value={nowySlot.lokalizacjaId}
-        onChange={(e) =>
-          setNowySlot((prev) => ({ ...prev, lokalizacjaId: e.target.value }))
-        }
-      >
-        <option value="">Wybierz lokalizację</option>
-        {lokalizacje
-          .filter((l) => l.active)
-          .map((lokalizacja) => (
-            <option key={lokalizacja.id} value={lokalizacja.id}>
-              {lokalizacja.name}
-            </option>
-          ))}
-      </select>
+    <div className="bg-base-200 p-4 rounded-xl shadow-md mb-4">
+      <h2 className="text-lg font-semibold mb-4 text-base-content">
+        Dodaj slot
+      </h2>
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 items-end">
+        {/* Lokalizacja */}
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Lokalizacja</span>
+          </label>
+          <select
+            className="select select-sm select-bordered"
+            value={nowySlot.lokalizacjaId}
+            onChange={(e) =>
+              setNowySlot((prev) => ({
+                ...prev,
+                lokalizacjaId: e.target.value,
+              }))
+            }
+          >
+            <option value="">Wybierz lokalizację</option>
+            {lokalizacje
+              .filter((l) => l.active)
+              .map((lok) => (
+                <option key={lok.id} value={lok.id}>
+                  {lok.name}
+                </option>
+              ))}
+          </select>
+        </div>
 
-      {/* Data */}
-      <input
-        type="date"
-        className="input input-sm input-bordered"
-        value={nowySlot.data}
-        onChange={(e) =>
-          setNowySlot((prev) => ({ ...prev, data: e.target.value }))
-        }
-      />
+        {/* Data */}
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Data</span>
+          </label>
+          <input
+            type="date"
+            className="input input-sm input-bordered"
+            value={nowySlot.data}
+            onChange={(e) =>
+              setNowySlot((prev) => ({ ...prev, data: e.target.value }))
+            }
+          />
+        </div>
 
-      {/* Godzina od */}
-      <select
-        className="select select-sm select-bordered"
-        value={nowySlot.from || ""}
-        onChange={(e) => {
-          const godzina = parseInt(e.target.value);
-          setNowySlot((prev) => ({
-            ...prev,
-            from: godzina,
-            to: undefined,
-          }));
-        }}
-      >
-        <option value="">Od godziny</option>
-        {dostepneGodzinyOd.map((godzina) => (
-          <option key={godzina} value={godzina}>
-            {godzina}
-          </option>
-        ))}
-      </select>
+        {/* Od godziny */}
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Od godziny</span>
+          </label>
+          <select
+            className="select select-sm select-bordered"
+            value={nowySlot.from || ""}
+            onChange={(e) => {
+              const godzina = parseInt(e.target.value);
+              setNowySlot((prev) => ({
+                ...prev,
+                from: godzina,
+                to: undefined,
+              }));
+            }}
+          >
+            <option value="">Od godziny</option>
+            {godzinyOd.map((g) => (
+              <option key={g} value={g}>
+                {g}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      {/* Godzina do */}
-      <select
-        className="select select-sm select-bordered"
-        value={
-          typeof nowySlot.to === "number"
-            ? nowySlot.to
-            : nowySlot.from
-            ? nowySlot.from + 1
-            : ""
-        }
-        onChange={(e) => {
-          const to = parseInt(e.target.value);
-          if (to <= nowySlot.from) {
-            toast.error("Godzina 'do' musi być późniejsza niż 'od'");
-            return;
-          }
-          setNowySlot((prev) => ({
-            ...prev,
-            to,
-          }));
-        }}
-      >
-        <option value="">Do godziny</option>
-        {dostepneGodzinyDo.map((godzina) => (
-          <option key={godzina} value={godzina}>
-            {godzina}
-          </option>
-        ))}
-      </select>
+        {/* Do godziny */}
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Do godziny</span>
+          </label>
+          <select
+            className="select select-sm select-bordered"
+            value={
+              typeof nowySlot.to === "number"
+                ? nowySlot.to
+                : nowySlot.from
+                ? nowySlot.from + 1
+                : ""
+            }
+            onChange={(e) => {
+              const to = parseInt(e.target.value);
+              if (to <= nowySlot.from) {
+                toast.error("Godzina 'do' musi być późniejsza niż 'od'");
+                return;
+              }
+              setNowySlot((prev) => ({ ...prev, to }));
+            }}
+          >
+            <option value="">Do godziny</option>
+            {godzinyDo.map((g) => (
+              <option key={g} value={g}>
+                {g}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      {/* Dodaj button */}
-      <button
-        onClick={handleAddSlot}
-        className="btn btn-sm btn-success"
-        disabled={dodawanie}
-      >
-        {dodawanie ? (
-          <span className="loading loading-spinner loading-sm" />
-        ) : (
-          <IoMdAdd />
-        )}
-      </button>
+        {/* Przycisk Dodaj */}
+        <div className="form-control">
+          <button
+            onClick={handleAddSlot}
+            className="btn btn-sm btn-success mt-5"
+            disabled={dodawanie}
+          >
+            {dodawanie ? (
+              <span className="loading loading-spinner loading-sm" />
+            ) : (
+              <>
+                <IoMdAdd className="mr-1" />
+                Dodaj
+              </>
+            )}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
