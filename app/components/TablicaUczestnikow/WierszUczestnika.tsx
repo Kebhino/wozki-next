@@ -25,7 +25,6 @@ export default function WierszUczestnika({
   const { dodajPoleDoMapy, usunPoleZMapy, sprawdzCzyEdytowane } =
     useEdytowanePolaMapa();
   const [usunWTrakcie, setUsunWTrakcie] = useState<number | null>(null);
-
   const [trybEdycji, setTrybEdycji] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -50,6 +49,7 @@ export default function WierszUczestnika({
 
   return (
     <tr className="hover">
+      {/* Imię i nazwisko */}
       <td>
         {sprawdzCzyEdytowane(participant.id, "name") ? (
           <span className="loading loading-spinner loading-sm text-primary"></span>
@@ -90,47 +90,51 @@ export default function WierszUczestnika({
         )}
       </td>
 
+      {/* Typ użytkownika (rola) */}
       <td>
-        <div className="flex gap-2 items-center">
-          {sprawdzCzyEdytowane(participant.id, "status") ? (
-            <span className="loading loading-spinner loading-sm text-primary"></span>
-          ) : (
-            <select
-              className="select select-bordered select-sm w-[110px]"
-              value={participant.userTypeId ?? ""}
-              onChange={async (e) => {
-                dodajPoleDoMapy(participant.id, "status");
-                await handleUpdate("userTypeId", parseInt(e.target.value, 10));
-                usunPoleZMapy(participant.id, "status");
-              }}
-            >
-              <option value="" disabled>
-                Wybierz...
+        {sprawdzCzyEdytowane(participant.id, "status") ? (
+          <span className="loading loading-spinner loading-sm text-primary"></span>
+        ) : (
+          <select
+            className="select select-bordered select-sm w-[120px]"
+            value={participant.userTypeId ?? ""}
+            onChange={async (e) => {
+              dodajPoleDoMapy(participant.id, "status");
+              await handleUpdate("userTypeId", parseInt(e.target.value, 10));
+              usunPoleZMapy(participant.id, "status");
+            }}
+          >
+            <option value="" disabled>
+              Wybierz...
+            </option>
+            {statusOptions.map((status) => (
+              <option key={status.id} value={status.id}>
+                {status.type}
               </option>
-              {statusOptions.map((status) => (
-                <option key={status.id} value={status.id}>
-                  {status.type}
-                </option>
-              ))}
-            </select>
-          )}
-          {sprawdzCzyEdytowane(participant.id, "active") ? (
-            <span className="loading loading-spinner loading-sm text-primary"></span>
-          ) : (
-            <input
-              type="checkbox"
-              className="toggle toggle-success"
-              checked={participant.active}
-              onChange={async (e) => {
-                dodajPoleDoMapy(participant.id, "active");
-                await handleUpdate("active", e.target.checked);
-                usunPoleZMapy(participant.id, "active");
-              }}
-            />
-          )}
-        </div>
+            ))}
+          </select>
+        )}
       </td>
 
+      {/* Status aktywności */}
+      <td>
+        {sprawdzCzyEdytowane(participant.id, "active") ? (
+          <span className="loading loading-spinner loading-sm text-primary"></span>
+        ) : (
+          <input
+            type="checkbox"
+            className="toggle toggle-success"
+            checked={participant.active}
+            onChange={async (e) => {
+              dodajPoleDoMapy(participant.id, "active");
+              await handleUpdate("active", e.target.checked);
+              usunPoleZMapy(participant.id, "active");
+            }}
+          />
+        )}
+      </td>
+
+      {/* Akcje */}
       <td>
         <button
           className="btn btn-sm btn-outline btn-error rounded-lg"
@@ -142,6 +146,7 @@ export default function WierszUczestnika({
             <Trash className="w-4 h-4" size={16} />
           )}
         </button>
+
         {idDoUsuniecia === participant.id && (
           <DialogUsuniecia
             participant={participant}

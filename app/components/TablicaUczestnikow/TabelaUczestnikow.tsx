@@ -56,13 +56,14 @@ export default function TabelaUczestnikow({
             </th>
             <th>
               <SortableColumnHeader
-                label="Status"
+                label="Typ"
                 sortKey="status"
                 currentSort={sortConfig.type}
                 sortAsc={sortConfig.direction === "asc"}
                 onSortChange={onSortChangeAction}
               />
             </th>
+            <th>Aktywny</th>
             <th>Akcje</th>
           </tr>
         </thead>
