@@ -48,7 +48,6 @@ export default function FormularzDodawaniaSlotu() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            id: uuidv4(),
             locationId: parseInt(nowySlot.lokalizacjaId),
             data: nowySlot.data,
             from: nowySlot.from + i,

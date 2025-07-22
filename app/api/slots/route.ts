@@ -19,9 +19,10 @@ export async function POST(request:NextRequest) {
 
     try { 
     const body = await request.json()
+    console.log(body)
     const { locationId, data, from} = body 
 
-    if ( !locationId || data  || from) {
+    if ( !locationId || !data  || !from) {
             return NextResponse.json({error : "Brak wymaganych pól"},{status: 400})
             }
 
