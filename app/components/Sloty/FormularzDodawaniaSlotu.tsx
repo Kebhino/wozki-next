@@ -4,11 +4,13 @@ import { useLokalizacje } from "@/app/hooks/useLocations";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { IoMdAdd } from "react-icons/io";
+import { useQueryClient } from "@tanstack/react-query";
 
 const godzinyOd = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 const godzinyDo = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 
 export default function FormularzDodawaniaSlotu() {
+  const queryClient = useQueryClient();
   const { data: lokalizacje = [], refetch: refetchSloty } = useLokalizacje();
   const [dodawanie, setDodawanie] = useState(false);
 
@@ -53,6 +55,7 @@ export default function FormularzDodawaniaSlotu() {
       toast.error("Błąd dodawania slota.");
     } finally {
       setDodawanie(false);
+      await queryClient.invalidateQueries({ queryKey: ["slots"] });
     }
   };
 
