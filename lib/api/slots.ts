@@ -11,7 +11,7 @@ export const getSlots = async (signal?: AbortSignal): Promise<Slot[]> => {
 export async function updateSlotInDb(
   id: number,
   field: keyof Slot,
-  value: string | number | boolean
+  value: string | number | boolean | Date
 ) {
   const res = await fetch("/api/slots", {
     method: "PATCH",

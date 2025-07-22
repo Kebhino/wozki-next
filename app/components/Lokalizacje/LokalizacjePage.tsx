@@ -1,14 +1,13 @@
 "use client";
 
+import { useLokalizacje } from "@/app/hooks/useLocations";
+import { SortConfigLokalizacje } from "@/app/types/sortowanieLokalizacje";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import FormularzDodawania from "./FormularzDodawaniaLokalizacji";
-import WierszLokalizacji from "./WierszLokalizacji";
-import type { Location } from "@/app/generated/prisma";
-import { SortConfigLokalizacje } from "@/app/types/sortowanieLokalizacje";
 import SortableColumnHeader from "./SortableColumnHeaderLokalizacje";
-import { useLokalizacje } from "@/app/hooks/useLocations";
+import WierszLokalizacji from "./WierszLokalizacji";
 
 export default function LokalizacjePage() {
   const queryClient = useQueryClient();

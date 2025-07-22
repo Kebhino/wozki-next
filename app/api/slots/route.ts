@@ -10,7 +10,7 @@ try {
     })
     return NextResponse.json(sloty)
 }catch (error) { 
-
+    console.log(error)
     return NextResponse.json({error: "Bład serwera"}, {status: 500})
 }
 }
@@ -35,6 +35,7 @@ export async function POST(request:NextRequest) {
     })
     return NextResponse.json(nowySlot)
     } catch (error) { 
+      console.log(error)
         return NextResponse.json({error: "Bład serwera"},{status: 500})
     }
 }

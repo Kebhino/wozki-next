@@ -18,7 +18,10 @@ export default function WierszSlotu({ slot, lokalizacje }: Props) {
   const { dodajPoleDoMapy, usunPoleZMapy, sprawdzCzyEdytowane } =
     useEdytowanePolaMapa();
 
-  const update = async (field: keyof Slot, value: any) => {
+  const update = async (
+    field: keyof Slot,
+    value: string | number | boolean | Date
+  ) => {
     dodajPoleDoMapy(slot.id, field);
     await updateSlotInDb(slot.id, field, value);
     await queryClient.invalidateQueries({ queryKey: ["slots"] });

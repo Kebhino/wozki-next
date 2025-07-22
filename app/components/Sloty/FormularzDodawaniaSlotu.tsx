@@ -1,7 +1,6 @@
 "use client";
 
 import { useLokalizacje } from "@/app/hooks/useLocations";
-import { useSloty } from "@/app/hooks/useSlots";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { IoMdAdd } from "react-icons/io";
