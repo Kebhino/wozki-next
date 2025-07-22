@@ -1,7 +1,7 @@
 import type { UserZTypem } from "@/app/components/TablicaUczestnikow/TabelaUczestnikow";
 
 
-export const pobierzUczestnikow = async (signal?: AbortSignal): Promise<UserZTypem[]> => {
+export const getUsers = async (signal?: AbortSignal): Promise<UserZTypem[]> => {
   const res = await fetch("/api/users", {signal});
   if (!res.ok) throw new Error("Błąd pobierania uczestników");
 

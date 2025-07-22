@@ -18,6 +18,7 @@ export default function FormularzDodawaniaSlotu() {
     isError,
     refetch: refetchSloty,
   } = useLokalizacje();
+
   const {
     data: sloty = [],
     isLoading: isLoadingSlot,
@@ -43,7 +44,7 @@ export default function FormularzDodawaniaSlotu() {
     setDodawanie(true);
     try {
       for (let i = 0; i < ile; i++) {
-        await fetch("/api/sloty/dodaj", {
+        await fetch("/api/slots", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

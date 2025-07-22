@@ -1,6 +1,6 @@
 "use client";
 
-import { useStatus } from "@/app/hooks/useStatus";
+import { useUserTypes } from "@/app/hooks/useUserTypes";
 import { Uzytkownik } from "@/app/types/user";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function FormularzDodajUczestnika({ onDodanoAction }: Props) {
-  const { data: statusOptions = [] } = useStatus();
+  const { data: statusOptions = [] } = useUserTypes();
   const [nameInput, setNameInput] = useState("");
   const [userTypeId, setUserTypeId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);

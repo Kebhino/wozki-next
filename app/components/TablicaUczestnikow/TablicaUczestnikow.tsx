@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { SortConfig } from "@/app/types/sortowanieUczestnicy";
 import FormularzDodajUczestnika from "./FormularzDodajUczestnika";
 import TabelaUczestnikow from "./TabelaUczestnikow";
-import { useStatus } from "@/app/hooks/useStatus";
+import { useUserTypes } from "@/app/hooks/useUserTypes";
 import { useUczestnicy } from "@/app/hooks/useUsers";
 
 export default function TablicaUczestnikow() {
@@ -29,7 +29,7 @@ export default function TablicaUczestnikow() {
     data: statusOptions = [],
     isLoading: isLoadingStatus,
     isError: isErrorStatus,
-  } = useStatus();
+  } = useUserTypes();
 
   const handleDodano = () => {
     toast.success("Dodano uczestnika");

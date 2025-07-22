@@ -8,7 +8,7 @@ export async function GET() {
       include: { UserType: true },
       orderBy: { id: 'asc' },
     });
-    console.log(users)
+    
     return NextResponse.json(users);
   } catch (error) {
     console.error("Błąd pobierania użytkowników:", error);

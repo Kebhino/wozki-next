@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { Location } from "../generated/prisma";
-import { pobierzLokalizacje } from "@/lib/api/locations";
+import { getLocations } from "@/lib/api/locations";
 
 
 export function useLokalizacje() {
   return useQuery<Location[]>({
-    queryKey: ["lokalizacje"],
-    queryFn: ({signal}) => pobierzLokalizacje(signal)
+    queryKey: ["locations"],
+    queryFn: ({signal}) => getLocations(signal)
   });
 }

@@ -1,6 +1,6 @@
 import { Location } from "@/app/generated/prisma";
 
-export const pobierzLokalizacje = async (signal?: AbortSignal): Promise<Location[]> => {
+export const getLocations = async (signal?: AbortSignal): Promise<Location[]> => {
   const res = await fetch("/api/locations",{signal});
   if (!res.ok) throw new Error("Błąd pobierania uczestników");
 
