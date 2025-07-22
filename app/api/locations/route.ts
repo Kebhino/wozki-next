@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma/client';
+import { Prisma } from '@/app/generated/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET() {
@@ -50,24 +51,39 @@ export async function PATCH(request:NextRequest) {
     }
 }
 
-export async function DELETE(request:NextRequest) {
-    const body = await request.json()
 
-    const {id} = body 
 
-    if (!id) 
-        return NextResponse.json({error: "Brak ID lokalizacji"}, {status: 400})
+export async function DELETE(request: NextRequest) {
+  const body = await request.json();
+  const { id } = body;
 
-    try { 
-        const deleted = await prisma.location.delete({
-            where: {id}
-        })
-        return NextResponse.json(deleted)
-    } catch(error) { 
-        console.error("Błąd serwera:", error);
-        return NextResponse.json({error: "Błąd serwera"}, {status: 500})
+  if (!id) {
+    return NextResponse.json({ error: "Brak ID lokalizacji" }, { status: 400 });
+  }
+
+  try {
+    const deleted = await prisma.location.delete({
+      where: { id },
+    });
+    return NextResponse.json(deleted);
+  } catch (error) {
+    console.error("❌ Błąd usuwania lokalizacji:", error);
+
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2003"
+    ) {
+      return NextResponse.json(
+        { error: "Nie można usunąć — do tej lokalizacji przypisane są sloty." },
+        { status: 409 } // Konflikt danych
+      );
     }
 
-    
+    return NextResponse.json(
+      { error: "Błąd serwera podczas usuwania lokalizacji" },
+      { status: 500 }
+    );
+  }
 }
+
         

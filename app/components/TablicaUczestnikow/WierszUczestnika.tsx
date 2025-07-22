@@ -40,7 +40,7 @@ export default function WierszUczestnika({
 
         if (!res.ok) throw new Error("Błąd aktualizacji");
 
-        queryClient.invalidateQueries({ queryKey: ["participants"] });
+        queryClient.invalidateQueries({ queryKey: ["users"] });
       } catch {
         toast.error("Błąd aktualizacji");
       }

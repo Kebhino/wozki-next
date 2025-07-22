@@ -2,6 +2,7 @@
 
 import { useUserTypes } from "@/app/hooks/useUserTypes";
 import { Uzytkownik } from "@/app/types/user";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { IoMdAdd } from "react-icons/io";
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function FormularzDodajUczestnika({ onDodanoAction }: Props) {
+  const queryClient = useQueryClient();
   const { data: statusOptions = [] } = useUserTypes();
   const [nameInput, setNameInput] = useState("");
   const [userTypeId, setUserTypeId] = useState<number | null>(null);
@@ -50,6 +52,7 @@ export default function FormularzDodajUczestnika({ onDodanoAction }: Props) {
           ? `Dodano ${names.length} uczestników`
           : "Dodano uczestnika"
       );
+      queryClient.invalidateQueries({ queryKey: ["users"] });
 
       setNameInput("");
       setUserTypeId(null);

@@ -38,7 +38,7 @@ export default function WierszLokalizacji({ lokalizacja }: Props) {
 
         if (!res.ok) throw new Error("Błąd aktualizacji");
 
-        queryClient.invalidateQueries({ queryKey: ["lokalizacje"] });
+        queryClient.invalidateQueries({ queryKey: ["locations"] });
       } catch {
         toast.error("Błąd aktualizacji lokalizacji");
       }

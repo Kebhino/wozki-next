@@ -29,12 +29,18 @@ export default function DialogUsunieciaLokalizacji({
         body: JSON.stringify({ id: lokalizacja.id }),
       });
 
-      if (!res.ok) throw new Error("Błąd usuwania");
+      const dane = await res.json();
+
+      if (!res.ok) {
+        throw new Error(dane.error || "Błąd usuwania lokalizacji");
+      }
 
       toast.success("Lokalizacja usunięta");
-      queryClient.invalidateQueries({ queryKey: ["lokalizacje"] });
-    } catch {
-      toast.error("Błąd usuwania lokalizacji");
+      queryClient.invalidateQueries({ queryKey: ["locations"] });
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Nie udało się usunąć lokalizacji"
+      );
     } finally {
       resetIdDoUsuniecia();
       usunPoleZMapy(lokalizacja.id, "usun");

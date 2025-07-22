@@ -32,7 +32,7 @@ export default function DialogUsuniecia({
       if (!res.ok) throw new Error("Błąd usuwania");
 
       toast.success("Uczestnik usunięty");
-      queryClient.invalidateQueries({ queryKey: ["participants"] });
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     } catch {
       toast.error("Błąd usuwania uczestnika");
     } finally {

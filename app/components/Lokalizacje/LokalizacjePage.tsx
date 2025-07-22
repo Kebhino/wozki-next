@@ -35,7 +35,7 @@ export default function LokalizacjePage() {
 
       if (res.ok) {
         toast.success("Dodano lokalizację");
-        queryClient.invalidateQueries({ queryKey: ["lokalizacje"] });
+        queryClient.invalidateQueries({ queryKey: ["locations"] });
       } else {
         toast.error("Błąd dodawania lokalizacji");
       }
