@@ -9,15 +9,15 @@ export default async function ListaGrupSlotow() {
     orderBy: [{ data: "asc" }],
   });
 
-  const komponenty = await Promise.all(
-    grupy.map((grupa) => (
-      <KartaSlotow
-        key={`${grupa.data}-${grupa.locationId}`}
-        data={grupa.data}
-        locationId={grupa.locationId}
-      />
-    ))
+  return (
+    <div className="flex flex-wrap gap-6">
+      {grupy.map((grupa) => (
+        <KartaSlotow
+          key={`${grupa.data}-${grupa.locationId}`}
+          data={grupa.data}
+          locationId={grupa.locationId}
+        />
+      ))}
+    </div>
   );
-
-  return <div className="flex flex-wrap gap-6">{komponenty}</div>;
 }
