@@ -1,11 +1,13 @@
 "use client";
 
 import { useUsers } from "@/app/hooks/useUsers";
+import { useWybranyUzytkownik } from "@/app/stores/useWybranyUzytkownik";
 import { useState } from "react";
 
 export default function WyborUczestnikaClient() {
   const { data: users = [] } = useUsers();
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const { ustawUzytkownika } = useWybranyUzytkownik();
 
   return (
     <div className="bg-base-200 p-4 rounded-xl shadow-md mb-4 text-center">

@@ -28,3 +28,28 @@ export async function POST(request:NextRequest) {
     }
    
 }
+
+export async function DELETE(request: NextRequest) {
+  const body = await request.json();
+  const { userId, slotId } = body;
+
+  if (!userId || !slotId) {
+    return NextResponse.json({ error: "Brakuje danych" }, { status: 400 });
+  }
+
+  try {
+    const usunietaDostepnosc = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        sloty: {
+          disconnect: { id: slotId },
+        },
+      },
+    });
+
+    return NextResponse.json(usunietaDostepnosc);
+  } catch (error) {
+    console.error("Błąd przy rezygnacji:", error);
+    return NextResponse.json({ error: "Nie udało się zrezygnować" }, { status: 500 });
+  }
+}

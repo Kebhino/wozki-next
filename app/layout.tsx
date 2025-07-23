@@ -4,6 +4,7 @@ import Footer from "@/app/components/Footer";
 import Providers from "@/app/providers"; // dodaj ten import
 
 import type { ReactNode } from "react";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "Wózki Planner",
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="pl" data-theme="light">
       <body className="w-full max-w-screen-lg mx-auto min-h-screen grid grid-rows-[auto_1fr_auto]">
         <Providers>
+          <Toaster position="top-center" />
           <NavigationBar />
           <main className="px-4">{children}</main>
           <Footer />
