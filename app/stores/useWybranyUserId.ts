@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-interface UzytkownikStore { 
+interface UzytkownikId { 
     uzytkownikId: number | null 
     ustawUzytkownika: (id: number | null) => void 
 }
 
-export const useWybranyUzytkownik = create<UzytkownikStore>((set) => ({ 
+export const useWybranyUzytkownik = create<UzytkownikId>((set) => ({ 
     uzytkownikId: null, 
     ustawUzytkownika: (id) => set({uzytkownikId: id})
 }))

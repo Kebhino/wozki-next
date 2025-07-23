@@ -1,4 +1,5 @@
 import { prisma } from "@/prisma/client";
+import ZapiszRezygnujButton from "./ZapiszZrezygnujButton";
 
 interface Props {
   data: Date;
@@ -33,9 +34,7 @@ export default async function KartaSlotow({ data, locationId }: Props) {
               className="flex justify-between items-center border-b pb-1 text-sm"
             >
               <span>{slot.from}:00</span>
-              <button className="btn btn-xs btn-outline btn-success rounded-sm">
-                Zapisz
-              </button>
+              <ZapiszRezygnujButton slotId={slot.id} />
             </div>
           ))}
         </div>

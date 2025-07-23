@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET() {
   try {
     const users = await prisma.user.findMany({
-      include: { UserType: true },
+      include: { UserType: true, sloty: true },
       orderBy: { id: 'asc' },
     });
     

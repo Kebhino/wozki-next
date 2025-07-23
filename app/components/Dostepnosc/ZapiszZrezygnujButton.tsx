@@ -1,23 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import { useWybranyUserStore } from "@/app/stores/useWybranyUserObiekt";
 
 interface Props {
-  userId: number;
   slotId: number;
-  zapisany: boolean; // czy użytkownik już zapisany?
 }
 
-export default function ZapiszRezygnujButton({
-  userId,
-  slotId,
-  zapisany,
-}: Props) {
+export default function ZapiszRezygnujButton({ slotId }: Props) {
+  const { user, ustawUsera } = useWybranyUserStore();
   const [loading, setLoading] = useState(false);
-  const [jestZapisany, setJestZapisany] = useState(zapisany);
+  const [jestZapisany, setJestZapisany] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setJestZapisany(user.sloty.some((slot) => slot.id === slotId));
+    }
+  }, [user, slotId]);
 
   const handleClick = async () => {
+    if (!user) return;
     setLoading(true);
 
     const method = jestZapisany ? "DELETE" : "POST";
@@ -25,18 +28,24 @@ export default function ZapiszRezygnujButton({
     const res = await fetch("/api/dostepnosc", {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, slotId }),
+      body: JSON.stringify({ userId: user.id, slotId }),
     });
 
     if (res.ok) {
-      setJestZapisany(!jestZapisany);
       toast.success(jestZapisany ? "Zrezygnowano" : "Zapisano!");
+      setJestZapisany(!jestZapisany);
+
+      const updated = await fetch(`/api/users/${user.id}`);
+      const newUser = await updated.json();
+      ustawUsera(newUser);
     } else {
-      toast.error("Błąd");
+      toast.error("Błąd operacji");
     }
 
     setLoading(false);
   };
+
+  if (!user) return null;
 
   return (
     <button
@@ -46,7 +55,13 @@ export default function ZapiszRezygnujButton({
         jestZapisany ? "btn-outline btn-error" : "btn-outline btn-success"
       }`}
     >
-      {loading ? "..." : jestZapisany ? "Zrezygnuj" : "Zapisz"}
+      {loading ? (
+        <span className="loading loading-spinner loading-xs" />
+      ) : jestZapisany ? (
+        "Zrezygnuj"
+      ) : (
+        "Zapisz"
+      )}
     </button>
   );
 }

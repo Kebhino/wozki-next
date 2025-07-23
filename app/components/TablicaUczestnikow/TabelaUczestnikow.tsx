@@ -1,12 +1,13 @@
 "use client";
 
-import type { User, UserType } from "@/app/generated/prisma";
+import { User, UserType, Slot } from "@/app/generated/prisma";
 import { SortConfig } from "@/app/types/sortowanieUczestnicy"; // ten może zostać jeśli dalej go używasz
 import SortableColumnHeader from "./SortableColumnHeader";
 import WierszUczestnika from "./WierszUczestnika";
 
 export type UserZTypem = User & {
   UserType: UserType;
+  sloty: Slot[];
 };
 
 interface Props {
