@@ -7,7 +7,7 @@ import { SortConfig } from "@/app/types/sortowanieUczestnicy";
 import FormularzDodajUczestnika from "./FormularzDodajUczestnika";
 import TabelaUczestnikow from "./TabelaUczestnikow";
 import { useUserTypes } from "@/app/hooks/useUserTypes";
-import { useUczestnicy } from "@/app/hooks/useUsers";
+import { useUsers } from "@/app/hooks/useUsers";
 
 export default function TablicaUczestnikow() {
   const queryClient = useQueryClient();
@@ -22,7 +22,7 @@ export default function TablicaUczestnikow() {
     data: participants = [],
     isLoading: isLoadingParticipants,
     isError: isErrorParticipants,
-  } = useUczestnicy();
+  } = useUsers();
 
   // ✅ Pobieranie statusów
   const {

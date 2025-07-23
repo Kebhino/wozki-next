@@ -5,7 +5,7 @@ import { getUsers } from "@/lib/api/users";
  
  
  
- export const useUczestnicy = () => { 
+ export const useUsers = () => { 
     return useQuery<UserZTypem[]>({
     queryKey: ["users"],
     queryFn: ({signal}) => getUsers(signal),

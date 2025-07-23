@@ -22,6 +22,7 @@ model User {
   UserType   UserType @relation(fields: [userTypeId], references: [id])
   userTypeId Int
   createdAt  DateTime @default(now())
+  sloty      Slot[]   @relation("Dostepnosc")
 }
 
 model UserType {
@@ -44,4 +45,5 @@ model Slot {
   from       Int      @default(11)
   Location   Location @relation(fields: [locationId], references: [id])
   locationId Int
+  users      User[]   @relation("Dostepnosc")
 }
