@@ -52,15 +52,6 @@ export default function ZapiszRezygnujButton({ slotId }: Props) {
     );
   }
 
-  // 🧠 Tu dodajemy ten warunek:
-  if (!user || loadingUser) {
-    return (
-      <div className="flex justify-center items-center h-6">
-        <span className="loading loading-spinner loading-xs" />
-      </div>
-    );
-  }
-
   return (
     <button
       onClick={handleClick}
