@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import toast from "react-hot-toast";
-import { useWybranyUserStore } from "@/app/stores/useWybranyUserObiekt";
 import { useUsers } from "@/app/hooks/useUsers";
+import { useWybranyUserStore } from "@/app/stores/useWybranyUserObiekt";
 import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 interface Props {
   slotId: number;
 }
 
 export default function ZapiszRezygnujButton({ slotId }: Props) {
-  const { user, loadingUser } = useWybranyUserStore();
+  const { user } = useWybranyUserStore();
   const [loading, setLoading] = useState(false);
   const { data: users = [], isLoading } = useUsers();
   const queryClient = useQueryClient();

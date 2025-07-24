@@ -1,9 +1,7 @@
 "use client";
 
 import { useUsers } from "@/app/hooks/useUsers";
-import { useWybranyUzytkownik } from "@/app/stores/useWybranyUserId";
 import { useWybranyUserStore } from "@/app/stores/useWybranyUserObiekt";
-import { useState } from "react";
 
 export default function WyborUczestnikaClient() {
   const { data: users = [] } = useUsers();
