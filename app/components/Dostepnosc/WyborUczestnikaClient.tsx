@@ -32,7 +32,7 @@ export default function WyborUczestnikaClient() {
         </label>
         <select
           className="select select-sm select-bordered ml-3"
-          value={user ? user.name : ""}
+          value={user?.id ?? ""}
           onChange={handleChange}
         >
           <option disabled value="">
