@@ -1,6 +1,5 @@
 import { prisma } from "@/prisma/client";
 import ZapiszRezygnujButton from "./ZapiszZrezygnujButton";
-import ButtonMarlenka from "./ButtonMarlenka";
 
 interface Props {
   data: Date;
@@ -46,7 +45,6 @@ export default async function KartaSlotow({ data, locationId }: Props) {
           ))}
         </div>
       </div>
-      <ButtonMarlenka />
     </div>
   );
 }

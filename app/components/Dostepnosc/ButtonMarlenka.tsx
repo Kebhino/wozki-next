@@ -7,7 +7,7 @@ const ButtonMarlenka = () => {
     toast.success("Dziękujemy za przekazanie dostęponości");
   };
   return (
-    <button className="btn btn-xs btn-success" onClick={handleClick}>
+    <button className="btn btn-md btn-success " onClick={handleClick}>
       ZAKOŃCZ
     </button>
   );
