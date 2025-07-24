@@ -52,11 +52,31 @@ export default function WierszSlotu({ slot, lokalizacje }: Props) {
             value={slot.locationId}
             onChange={(e) => update("locationId", parseInt(e.target.value))}
           >
-            {lokalizacje.map((lok) => (
-              <option key={lok.id} value={lok.id}>
-                {lok.name}
-              </option>
-            ))}
+            {(() => {
+              const wybranaLokalizacja = lokalizacje.find(
+                (l) => l.id === slot.locationId
+              );
+              const aktywneLokazliacje = lokalizacje.filter((l) => l.active);
+
+              const sprawdzamCzyJestJuzWTablicyPofiltrowanej =
+                aktywneLokazliacje.some((l) => l.id === wybranaLokalizacja?.id);
+
+              return (
+                <>
+                  {!sprawdzamCzyJestJuzWTablicyPofiltrowanej &&
+                  wybranaLokalizacja ? (
+                    <option value={wybranaLokalizacja.id}>
+                      {wybranaLokalizacja.name} (nieaktywna)
+                    </option>
+                  ) : null}
+                  {aktywneLokazliacje.map((lok) => (
+                    <option key={lok.id} value={lok.id}>
+                      {lok.name}
+                    </option>
+                  ))}
+                </>
+              );
+            })()}
           </select>
         )}
       </td>

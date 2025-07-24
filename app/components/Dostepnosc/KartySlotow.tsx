@@ -24,7 +24,13 @@ export default async function KartaSlotow({ data, locationId }: Props) {
     <div className="card w-96 bg-base-100 shadow-md">
       <div className="card-body">
         <h2 className="text-lg font-bold">
-          {location?.name} - {new Date(data).toLocaleDateString("pl-PL")}
+          {location?.name} -{" "}
+          {new Date(data).toLocaleDateString("pl-PL", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
         </h2>
 
         <div className="mt-4 flex flex-col gap-2">
