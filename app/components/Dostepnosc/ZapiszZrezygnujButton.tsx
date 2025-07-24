@@ -3,21 +3,22 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useWybranyUserStore } from "@/app/stores/useWybranyUserObiekt";
+import { useUsers } from "@/app/hooks/useUsers";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   slotId: number;
 }
 
 export default function ZapiszRezygnujButton({ slotId }: Props) {
-  const { user, ustawUsera, loadingUser } = useWybranyUserStore();
+  const { user, loadingUser } = useWybranyUserStore();
   const [loading, setLoading] = useState(false);
-  const [jestZapisany, setJestZapisany] = useState(false);
+  const { data: users = [], isLoading } = useUsers();
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (user) {
-      setJestZapisany(user.sloty.some((slot) => slot.id === slotId));
-    }
-  }, [user, slotId]);
+  const userWybrany = users.find((u) => u.id === user?.id);
+  const jestZapisany =
+    userWybrany?.sloty.some((slot) => slot.id === slotId) ?? false;
 
   const handleClick = async () => {
     if (!user) return;
@@ -32,18 +33,22 @@ export default function ZapiszRezygnujButton({ slotId }: Props) {
     });
 
     if (res.ok) {
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
       toast.success(jestZapisany ? "Zrezygnowano" : "Zapisano!");
-      setJestZapisany(!jestZapisany);
-
-      const updated = await fetch(`/api/users/${user.id}`);
-      const newUser = await updated.json();
-      ustawUsera(newUser);
     } else {
       toast.error("Błąd operacji");
     }
 
     setLoading(false);
   };
+
+  if (!user || isLoading) {
+    return (
+      <div className="flex justify-center items-center h-6">
+        <span className="loading loading-spinner loading-xs" />
+      </div>
+    );
+  }
 
   // 🧠 Tu dodajemy ten warunek:
   if (!user || loadingUser) {
