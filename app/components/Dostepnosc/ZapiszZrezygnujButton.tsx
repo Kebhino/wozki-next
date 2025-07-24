@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function ZapiszRezygnujButton({ slotId }: Props) {
-  const { user, ustawUsera } = useWybranyUserStore();
+  const { user, ustawUsera, loadingUser } = useWybranyUserStore();
   const [loading, setLoading] = useState(false);
   const [jestZapisany, setJestZapisany] = useState(false);
 
@@ -45,7 +45,14 @@ export default function ZapiszRezygnujButton({ slotId }: Props) {
     setLoading(false);
   };
 
-  if (!user) return null;
+  // 🧠 Tu dodajemy ten warunek:
+  if (!user || loadingUser) {
+    return (
+      <div className="flex justify-center items-center h-6">
+        <span className="loading loading-spinner loading-xs" />
+      </div>
+    );
+  }
 
   return (
     <button

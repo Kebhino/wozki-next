@@ -7,17 +7,21 @@ import { useState } from "react";
 
 export default function WyborUczestnikaClient() {
   const { data: users = [] } = useUsers();
-  const [selectedId, setSelectedId] = useState<number | null>(null);
-  const { ustawUzytkownika } = useWybranyUzytkownik();
-  const { ustawUsera } = useWybranyUserStore();
+  const { user, ustawUsera, ustawLoadingUser } = useWybranyUserStore();
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const id = parseInt(e.target.value);
     const user = users.find((user) => user.id === id) ?? null;
 
-    setSelectedId(id);
-    ustawUzytkownika(id);
     ustawUsera(user);
+    ustawLoadingUser(true);
+
+    if (user) {
+      const res = await fetch(`/api/users/${id}`);
+      const fullUser = await res.json();
+      ustawUsera(fullUser);
+    }
+    ustawLoadingUser(false);
   };
 
   return (
@@ -28,17 +32,19 @@ export default function WyborUczestnikaClient() {
         </label>
         <select
           className="select select-sm select-bordered ml-3"
-          value={selectedId ?? ""}
+          value={user ? user.name : ""}
           onChange={handleChange}
         >
           <option disabled value="">
             -- wybierz --
           </option>
-          {users.map((user) => (
-            <option key={user.id} value={user.id}>
-              {user.name}
-            </option>
-          ))}
+          {users
+            .filter((user) => user.active)
+            .map((user) => (
+              <option key={user.id} value={user.id}>
+                {user.name}
+              </option>
+            ))}
         </select>
       </div>
     </div>
