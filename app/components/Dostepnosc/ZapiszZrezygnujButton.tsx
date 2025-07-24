@@ -45,7 +45,9 @@ export default function ZapiszRezygnujButton({ slotId }: Props) {
   if (!user || isLoading) {
     return (
       <div className="flex justify-center items-center h-6">
-        <span className="loading loading-spinner loading-xs" />
+        <button className="btn btn-xs btn-warning btn-outline">
+          Wybierz Uczestnika
+        </button>
       </div>
     );
   }
