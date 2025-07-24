@@ -38,8 +38,13 @@ export default function WyborUczestnikaClient() {
           <option disabled value="">
             -- wybierz --
           </option>
-          {users
+          {[...users]
             .filter((user) => user.active)
+            .sort((a, b) => {
+              const nazwiskoA = a.name.split(" ").slice(-1)[0];
+              const nazwiskoB = b.name.split(" ").slice(-1)[0];
+              return nazwiskoA.localeCompare(nazwiskoB);
+            })
             .map((user) => (
               <option key={user.id} value={user.id}>
                 {user.name}
