@@ -16,13 +16,14 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
+  id         Int         @id @default(autoincrement())
   name       String
-  active     Boolean  @default(true)
-  UserType   UserType @relation(fields: [userTypeId], references: [id])
+  active     Boolean     @default(true)
+  UserType   UserType    @relation(fields: [userTypeId], references: [id])
   userTypeId Int
-  createdAt  DateTime @default(now())
-  sloty      Slot[]   @relation("Dostepnosc")
+  createdAt  DateTime    @default(now())
+  sloty      Slot[]      @relation("Dostepnosc")
+  Przydzial  Przydzial[]
 }
 
 model UserType {
@@ -39,11 +40,21 @@ model Location {
 }
 
 model Slot {
-  id         Int      @id @default(autoincrement())
-  active     Boolean  @default(true)
-  data       DateTime @default(now())
-  from       Int      @default(11)
-  Location   Location @relation(fields: [locationId], references: [id])
+  id         Int         @id @default(autoincrement())
+  active     Boolean     @default(true)
+  data       DateTime    @default(now())
+  from       Int         @default(11)
+  Location   Location    @relation(fields: [locationId], references: [id])
   locationId Int
-  users      User[]   @relation("Dostepnosc")
+  users      User[]      @relation("Dostepnosc")
+  Przydzial  Przydzial[]
+}
+
+model Przydzial {
+  userId Int
+  slotId Int
+  user   User @relation(fields: [userId], references: [id])
+  slot   Slot @relation(fields: [slotId], references: [id])
+
+  @@id([userId, slotId]) // złożony klucz główny
 }
