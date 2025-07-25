@@ -56,5 +56,5 @@ model Przydzial {
   user   User @relation(fields: [userId], references: [id])
   slot   Slot @relation(fields: [slotId], references: [id])
 
-  @@id([userId, slotId]) // złożony klucz główny
+  @@id([userId, slotId])
 }
