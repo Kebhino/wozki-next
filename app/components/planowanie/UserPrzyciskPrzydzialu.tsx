@@ -25,6 +25,9 @@ export default function UserPrzyciskPrzydzialu({
     try {
       const res = await fetch(`/api/planowanie/`, {
         method: czyPrzydzielony ? "DELETE" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ userId, slotId }),
       });
 
