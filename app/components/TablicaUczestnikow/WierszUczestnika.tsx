@@ -25,11 +25,16 @@ export default function WierszUczestnika({
   const { dodajPoleDoMapy, usunPoleZMapy, sprawdzCzyEdytowane } =
     useEdytowanePolaMapa();
   const [usunWTrakcie, setUsunWTrakcie] = useState<number | null>(null);
-  const [trybEdycji, setTrybEdycji] = useState(false);
+  const [trybEdycjiImie, setTrybEdycji] = useState(false);
+  const [trybEdycjiMultipler, setTrybEdycjiMultipler] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-
+  const inputRefMultipler = useRef<HTMLInputElement>(null);
   const handleUpdate = useCallback(
     async (field: keyof User, value: string | number | boolean) => {
+      if (field === "monthlySlotsLimit" && isNaN(value as number)) {
+        toast.error("Podaj poprawną liczbę");
+        return;
+      }
       try {
         const res = await fetch(`/api/users`, {
           method: "PATCH",
@@ -53,7 +58,7 @@ export default function WierszUczestnika({
       <td>
         {sprawdzCzyEdytowane(participant.id, "name") ? (
           <span className="loading loading-spinner loading-sm text-primary"></span>
-        ) : trybEdycji ? (
+        ) : trybEdycjiImie ? (
           <input
             ref={inputRef}
             autoFocus
@@ -148,6 +153,47 @@ export default function WierszUczestnika({
               usunPoleZMapy(participant.id, "dubbleSlots");
             }}
           />
+        )}
+      </td>
+      {/* Multipler */}
+
+      <td>
+        {sprawdzCzyEdytowane(participant.id, "monthlySlotsLimit") ? (
+          <span className="loading loading-spinner loading-sm text-primary"></span>
+        ) : trybEdycjiMultipler ? (
+          <input
+            ref={inputRefMultipler}
+            autoFocus
+            defaultValue={participant.monthlySlotsLimit}
+            className="input input-sm w-full max-w-[160px] bg-base-100 shadow-sm rounded-md px-2 py-1 border border-base-300 focus:outline-none focus:ring focus:ring-primary focus:ring-opacity-50 transition-all"
+            onKeyDown={async (e) => {
+              if (e.key === "Enter") {
+                dodajPoleDoMapy(participant.id, "monthlySlotsLimit");
+                await handleUpdate(
+                  "monthlySlotsLimit",
+                  parseInt((e.target as HTMLInputElement).value)
+                );
+                setTrybEdycjiMultipler(false);
+                usunPoleZMapy(participant.id, "monthlySlotsLimit");
+              }
+
+              if (e.key === "Escape") {
+                setTrybEdycjiMultipler(false);
+                usunPoleZMapy(participant.id, "monthlySlotsLimit");
+              }
+            }}
+            onBlur={() => {
+              setTrybEdycjiMultipler(false);
+              usunPoleZMapy(participant.id, "monthlySlotsLimit");
+            }}
+          />
+        ) : (
+          <span
+            className="cursor-pointer truncate max-w-[160px] inline-block"
+            onClick={() => setTrybEdycjiMultipler(true)}
+          >
+            {participant.monthlySlotsLimit}
+          </span>
         )}
       </td>
 
