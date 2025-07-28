@@ -23,6 +23,7 @@ export async function DELETE(
 }
 
 catch (error) {
+    console.error(error)
     return NextResponse.json(
       { error: "Nie znaleziono typu lub błąd przy usuwaniu." },
       { status: 500 }

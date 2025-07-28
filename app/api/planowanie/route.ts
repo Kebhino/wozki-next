@@ -40,6 +40,7 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
+    console.error(err)
     return NextResponse.json(
       { error: "Nie udało się usunąć przydziału" },
       { status: 400 }

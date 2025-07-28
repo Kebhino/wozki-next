@@ -6,7 +6,7 @@ import WierszZTypem from "./WierzZTypem";
 import FormularzDodawaniaTypow from "./FormularzDodawaniaTypow";
 
 const ListaTypow = () => {
-  const { data: typy = [], isLoading, isError } = useUserTypes();
+  const { data: typy = [] } = useUserTypes();
 
   return (
     <>

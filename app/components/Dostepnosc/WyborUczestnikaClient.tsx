@@ -8,11 +8,7 @@ import { useUserTypes } from "@/app/hooks/useUserTypes";
 export default function WyborUczestnikaClient() {
   const { data: users = [] } = useUsers();
   const { user, ustawUsera, ustawLoadingUser } = useWybranyUserStore();
-  const {
-    data: statusOptions = [],
-    isLoading: isLoadingStatus,
-    isError: isErrorStatus,
-  } = useUserTypes();
+  const { data: statusOptions = [] } = useUserTypes();
 
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const id = parseInt(e.target.value);
@@ -61,12 +57,9 @@ export default function WyborUczestnikaClient() {
         <table className="table table-xs w-full bg-base-200 text-base-content">
           <thead className="bg-base-300 text-base-content">
             <tr>
-              <th>Imię i nazwisko</th>
-              <th>Status</th>
-              <th>Aktywny</th>
+              <th className="pl-[13px]">Status</th>
               <th>DoubleSlots</th>
               <th>MonthlySlotsLimit</th>
-              <th>Akcje</th>
             </tr>
           </thead>
           <tbody>
@@ -74,6 +67,7 @@ export default function WyborUczestnikaClient() {
               <WierszUczestnika
                 participant={user}
                 statusOptions={statusOptions}
+                polaDoPokazania={["monthlySlotsLimit", "dubbleSlots", "status"]}
               />
             )}
           </tbody>

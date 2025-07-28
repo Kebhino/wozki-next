@@ -1,5 +1,5 @@
 import { UserType } from "@/app/generated/prisma";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 import React from "react";
 import toast from "react-hot-toast";
