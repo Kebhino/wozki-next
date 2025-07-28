@@ -7,6 +7,7 @@ import { Menu } from "lucide-react";
 import LogoAS from "@/public/wozkiLogoWebP.webp";
 
 const navItems = [
+  { href: "/typy", label: "Typy" },
   { href: "/uczestnicy", label: "Uczestnicy" },
   { href: "/lokalizacje", label: "Lokalizacje" },
   { href: "/sloty", label: "Sloty" },
