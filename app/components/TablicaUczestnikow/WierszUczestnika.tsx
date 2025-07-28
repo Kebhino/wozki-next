@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 import { useGlobalDialogStore } from "../../stores/useGlobalDialogStore";
 import DialogUsuniecia from "./DialogUsuniecia";
 import { UserZTypem } from "./TabelaUczestnikow";
+import { useWybranyUserStore } from "@/app/stores/useWybranyUserObiekt";
 
 interface Props {
   participant: UserZTypem;
@@ -27,6 +28,7 @@ export default function WierszUczestnika({
   const [usunWTrakcie, setUsunWTrakcie] = useState<number | null>(null);
   const [trybEdycjiImie, setTrybEdycji] = useState(false);
   const [trybEdycjiMultipler, setTrybEdycjiMultipler] = useState(false);
+  const { ustawUsera } = useWybranyUserStore();
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRefMultipler = useRef<HTMLInputElement>(null);
   const handleUpdate = useCallback(
@@ -45,6 +47,9 @@ export default function WierszUczestnika({
         if (!res.ok) throw new Error("Błąd aktualizacji");
 
         queryClient.invalidateQueries({ queryKey: ["users"] });
+        const updatedRes = await fetch(`/api/users/${participant.id}`);
+        const updatedUser = await updatedRes.json();
+        ustawUsera(updatedUser);
       } catch {
         toast.error("Błąd aktualizacji");
       }

@@ -2,10 +2,17 @@
 
 import { useUsers } from "@/app/hooks/useUsers";
 import { useWybranyUserStore } from "@/app/stores/useWybranyUserObiekt";
+import WierszUczestnika from "../TablicaUczestnikow/WierszUczestnika";
+import { useUserTypes } from "@/app/hooks/useUserTypes";
 
 export default function WyborUczestnikaClient() {
   const { data: users = [] } = useUsers();
   const { user, ustawUsera, ustawLoadingUser } = useWybranyUserStore();
+  const {
+    data: statusOptions = [],
+    isLoading: isLoadingStatus,
+    isError: isErrorStatus,
+  } = useUserTypes();
 
   const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const id = parseInt(e.target.value);
@@ -49,6 +56,28 @@ export default function WyborUczestnikaClient() {
               </option>
             ))}
         </select>
+      </div>
+      <div className="my-2">
+        <table className="table table-xs w-full bg-base-200 text-base-content">
+          <thead className="bg-base-300 text-base-content">
+            <tr>
+              <th>Imię i nazwisko</th>
+              <th>Status</th>
+              <th>Aktywny</th>
+              <th>DoubleSlots</th>
+              <th>MonthlySlotsLimit</th>
+              <th>Akcje</th>
+            </tr>
+          </thead>
+          <tbody>
+            {user && (
+              <WierszUczestnika
+                participant={user}
+                statusOptions={statusOptions}
+              />
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
