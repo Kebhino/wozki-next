@@ -71,7 +71,7 @@ export default function WierszUczestnika({
   return (
     <tr className="hover">
       {/* Imię i nazwisko */}
-      {polaDoPokazania?.includes("name") && (
+      {widocznePola?.includes("name") && (
         <td>
           {sprawdzCzyEdytowane(participant.id, "name") ? (
             <span className="loading loading-spinner loading-sm text-primary"></span>
