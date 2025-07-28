@@ -31,6 +31,7 @@ const WierszZTypem = ({ typ }: Props) => {
   return (
     <tr>
       <td>{typ.type}</td>
+      <td>{typ.multipler}</td>
       <td>
         <button className="btn btn-error btn-outline" onClick={deleteAction}>
           <Trash2 size={16} />

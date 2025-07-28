@@ -16,14 +16,16 @@ datasource db {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
-  name       String
-  active     Boolean     @default(true)
-  UserType   UserType    @relation(fields: [userTypeId], references: [id])
-  userTypeId Int
-  createdAt  DateTime    @default(now())
-  sloty      Slot[]      @relation("Dostepnosc")
-  Przydzial  Przydzial[]
+  id                Int         @id @default(autoincrement())
+  name              String
+  active            Boolean     @default(true)
+  UserType          UserType    @relation(fields: [userTypeId], references: [id])
+  userTypeId        Int
+  createdAt         DateTime    @default(now())
+  sloty             Slot[]      @relation("Dostepnosc")
+  Przydzial         Przydzial[]
+  dubbleSlots       Boolean     @default(false)
+  monthlySlotsLimit Int         @default(10)
 }
 
 model UserType {

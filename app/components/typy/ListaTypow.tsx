@@ -16,6 +16,7 @@ const ListaTypow = () => {
           <thead>
             <tr>
               <th>Typ</th>
+              <th>Mnożnik</th>
               <th>Akcje</th>
             </tr>
           </thead>
