@@ -65,6 +65,7 @@ export default function TabelaUczestnikow({
               />
             </th>
             <th>Aktywny</th>
+            <th>DoubleSlots</th>
             <th>Akcje</th>
           </tr>
         </thead>

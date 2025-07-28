@@ -133,6 +133,23 @@ export default function WierszUczestnika({
           />
         )}
       </td>
+      {/* DoubleSlots */}
+      <td>
+        {sprawdzCzyEdytowane(participant.id, "dubbleSlots") ? (
+          <span className="loading loading-spinner loading-sm text-primary"></span>
+        ) : (
+          <input
+            type="checkbox"
+            className="toggle toggle-success"
+            checked={participant.dubbleSlots}
+            onChange={async (e) => {
+              dodajPoleDoMapy(participant.id, "dubbleSlots");
+              await handleUpdate("dubbleSlots", e.target.checked);
+              usunPoleZMapy(participant.id, "dubbleSlots");
+            }}
+          />
+        )}
+      </td>
 
       {/* Akcje */}
       <td>
