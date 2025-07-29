@@ -50,6 +50,8 @@ export default function GrupowanieSlotow() {
     fetchGrupy();
   }, [dataOd, dataDo]);
 
+  // Test cecha
+
   return (
     <div className="space-y-6">
       {/* 📅 Filtry */}
