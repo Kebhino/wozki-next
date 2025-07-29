@@ -1,9 +1,9 @@
-import ListaGrupPrzydzialow from "./GrupowanieSlotow";
+import GrupowanieSlotow from "./GrupowanieSlotow";
 
 export default function PlanowaniePage() {
   return (
     <>
-      <ListaGrupPrzydzialow />
+      <GrupowanieSlotow />
     </>
   );
 }
