@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import UserPrzyciskPrzydzialu from "./UserPrzyciskPrzydzialu";
 import { format } from "date-fns";
 import { pl } from "date-fns/locale";
@@ -23,7 +23,7 @@ export default function KartyPrzydzialu({ data, locationId }: Props) {
   const [sloty, setSloty] = useState<Slot[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchSloty = async () => {
+  const fetchSloty = useCallback(async () => {
     try {
       const res = await fetch(
         `/api/planowanie/sloty?data=${data.toISOString()}&locationId=${locationId}`
@@ -33,7 +33,7 @@ export default function KartyPrzydzialu({ data, locationId }: Props) {
     } catch (err) {
       console.error("Błąd ładowania slotów:", err);
     }
-  };
+  }, [data, locationId]);
 
   useEffect(() => {
     const init = async () => {
@@ -42,7 +42,7 @@ export default function KartyPrzydzialu({ data, locationId }: Props) {
       setLoading(false);
     };
     init();
-  }, [data, locationId]);
+  }, [data, locationId, fetchSloty]);
 
   if (loading) return <p>Ładowanie slotów...</p>;
   if (sloty.length === 0) return null;

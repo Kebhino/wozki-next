@@ -1,11 +1,9 @@
 "use client";
 
+import { UserType } from "@/app/generated/prisma";
 import { useGlobalDialogStore } from "@/app/stores/useGlobalDialogStore";
-import { useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
-import { toast } from "react-hot-toast";
-import { UserType } from "@/app/generated/prisma";
 import DialogUsunieciaTypu from "./DialogusunieciaTypu";
 
 interface Props {
@@ -13,7 +11,6 @@ interface Props {
 }
 
 export default function WierszZTypem({ typ }: Props) {
-  const queryClient = useQueryClient();
   const { setIdDoUsuniecia, idDoUsuniecia } = useGlobalDialogStore();
   const [usunWTrakcie, setUsunWTrakcie] = useState<number | null>(null);
 
